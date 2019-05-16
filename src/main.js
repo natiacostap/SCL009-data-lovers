@@ -6,7 +6,7 @@
  let btnWeak = '';
  let btnFilters = '';
  let buscadorNombre = '';
-
+ google.load('visualization', '1.0', { 'packages': ['corechart'] });
  window.onload
  fetch('https://raw.githubusercontent.com/natiacostap/SCL009-data-lovers/master/src/data/pokemon/pokemon.json').then((response) => {
      return response.json();
@@ -273,13 +273,9 @@
                  let dataNum = window.filterNum(listaPokemones, buscadorNombre);
                  vaciar();
                  imprimir(dataNum);
-                 
                  document.getElementById('noFound').innerHTML = '';
              }
-
-             
-             });
-              
+        });
              document.getElementById('calculo-agregado').innerHTML = '';
              document.getElementById('buscador').value = '';
              document.getElementById('buscador').focus();
@@ -326,4 +322,17 @@
 
          document.getElementById('modalInfo').innerHTML = modalInfo;
      })
- 
+
+     //grafico con pokemones por tipo
+     google.charts.setOnLoadCallback(drawChart);          function drawChart() {
+        var data = google.visualization.arrayToDataTable([key, value])
+        var options = {
+             title : 'Data por años',
+             vAxis: {title: 'Valor'},
+             hAxis: {title: 'Año'},
+             seriesType: 'bars',
+             series: {10: {type: 'line'}}
+           };
+        var chart = new google.visualization.ComboChart(document.getElementById("charts"));
+        chart.draw(data, options);          }
+
